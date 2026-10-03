@@ -6,6 +6,7 @@ import '../app_theme.dart';
 import '../data/pilgrimage_repository.dart';
 import '../widgets/app_back_button.dart';
 import '../widgets/app_status_banner.dart';
+import '../widgets/input_dialog.dart';
 import 'plan_import_package.dart';
 import 'plan_import_preview_screen.dart';
 import 'plan_link.dart';
@@ -29,6 +30,100 @@ class PlanLinkImportScreen extends StatefulWidget {
 
   @override
   State<PlanLinkImportScreen> createState() => _PlanLinkImportScreenState();
+}
+
+class _LinkImportAction extends StatelessWidget {
+  const _LinkImportAction({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.subtitle,
+    this.primary = false,
+    super.key,
+  });
+
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final VoidCallback? onTap;
+  final bool primary;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    final foreground = enabled && primary
+        ? AppColors.onAccent
+        : enabled
+        ? AppColors.textPrimary
+        : AppColors.textSecondary;
+    final radius = BorderRadius.circular(8);
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: Material(
+        color: enabled && primary
+            ? AppColors.accent
+            : enabled
+            ? AppColors.surface
+            : AppColors.surfaceMuted,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: enabled && primary ? AppColors.accent : AppColors.border,
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: radius,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 20,
+                  color: enabled && !primary
+                      ? AppColors.accentForeground
+                      : foreground,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: foreground,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                      if (subtitle != null) ...[
+                        const SizedBox(height: 3),
+                        Text(
+                          subtitle!,
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(LucideIcons.chevronRight, size: 18, color: foreground),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 enum _Phase { idle, resolving, choosingAsset, downloading, reading }
@@ -251,15 +346,19 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
     return showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       isScrollControlled: true,
       builder: (context) => SafeArea(
         child: ListView(
           key: const ValueKey('plan-link-entry-sheet'),
           shrinkWrap: true,
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+              padding: const EdgeInsets.only(bottom: 12),
               child: Text(
                 '压缩包里有多个计划，选择要导入的一个',
                 style: TextStyle(
@@ -271,12 +370,15 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
               ),
             ),
             for (final entry in entries)
-              ListTile(
-                key: ValueKey('plan-link-entry-${entry.name}'),
-                leading: Icon(LucideIcons.package, color: AppColors.accentDark),
-                title: Text(entry.fileName),
-                subtitle: Text(formatPlanLinkBytes(entry.size)),
-                onTap: () => Navigator.of(context).pop(entry.name),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _LinkImportAction(
+                  key: ValueKey('plan-link-entry-${entry.name}'),
+                  icon: LucideIcons.package,
+                  title: entry.fileName,
+                  subtitle: formatPlanLinkBytes(entry.size),
+                  onTap: () => Navigator.of(context).pop(entry.name),
+                ),
               ),
           ],
         ),
@@ -348,35 +450,47 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
               ),
               const SizedBox(height: 14),
             ],
-            TextField(
-              key: const ValueKey('plan-link-input'),
-              controller: _link,
-              enabled: available && !_busy,
-              keyboardType: TextInputType.url,
-              autocorrect: false,
-              enableSuggestions: false,
-              textInputAction: TextInputAction.go,
-              onSubmitted: (_) => _start(),
-              decoration: InputDecoration(
-                labelText: '链接',
-                hintText: 'https://github.com/…/releases/…',
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  key: const ValueKey('plan-link-paste'),
-                  tooltip: '粘贴',
-                  onPressed: available && !_busy ? _paste : null,
-                  icon: const Icon(LucideIcons.clipboardPaste),
-                ),
+            AppDialogField(
+              label: '链接',
+              child: TextField(
+                key: const ValueKey('plan-link-input'),
+                controller: _link,
+                enabled: available && !_busy,
+                keyboardType: TextInputType.url,
+                autocorrect: false,
+                enableSuggestions: false,
+                textInputAction: TextInputAction.go,
+                onSubmitted: available && !_busy ? (_) => _start() : null,
+                onTapOutside: dismissKeyboardOnTapOutside,
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                decoration:
+                    appDialogInputDecoration(
+                      hintText: 'https://github.com/…/releases/…',
+                    ).copyWith(
+                      suffixIcon: IconButton(
+                        key: const ValueKey('plan-link-paste'),
+                        tooltip: '粘贴',
+                        onPressed: available && !_busy ? _paste : null,
+                        icon: const Icon(LucideIcons.clipboardPaste),
+                        style: IconButton.styleFrom(
+                          foregroundColor: AppColors.accentForeground,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
               ),
             ),
             const SizedBox(height: 12),
-            FilledButton.icon(
+            _LinkImportAction(
               key: const ValueKey('plan-link-start'),
-              onPressed: available && !_busy && _link.text.trim().isNotEmpty
+              primary: true,
+              onTap: available && !_busy && _link.text.trim().isNotEmpty
                   ? _start
                   : null,
-              icon: const Icon(LucideIcons.download),
-              label: const Text('读取链接'),
+              icon: LucideIcons.download,
+              title: '读取链接',
             ),
             const SizedBox(height: 16),
             ..._status(),
@@ -446,22 +560,17 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
           ),
           const SizedBox(height: 8),
           for (var i = 0; i < _assets.length; i++)
-            Card(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: ListTile(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _LinkImportAction(
                 key: ValueKey('plan-link-asset-$i'),
-                leading: Icon(
-                  _assets[i].isPlan
-                      ? LucideIcons.package
-                      : LucideIcons.fileArchive,
-                  color: AppColors.accentDark,
-                ),
-                title: Text(_assets[i].name),
-                subtitle: Text(
-                  '${formatPlanLinkBytes(_assets[i].size)}'
-                  '${_assets[i].isPlan ? '' : ' · 压缩包'}',
-                ),
-                trailing: const Icon(LucideIcons.download),
+                icon: _assets[i].isPlan
+                    ? LucideIcons.package
+                    : LucideIcons.fileArchive,
+                title: _assets[i].name,
+                subtitle:
+                    '${formatPlanLinkBytes(_assets[i].size)}'
+                    '${_assets[i].isPlan ? '' : ' · 压缩包'}',
                 onTap: () => _downloadAsset(_assets[i]),
               ),
             ),
