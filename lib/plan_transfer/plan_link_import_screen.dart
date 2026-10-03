@@ -431,13 +431,59 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            Text(
-              '粘贴 GitHub 发布页面或计划文件的下载链接，MiriaGo 会下载计划并打开导入预览。',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 13,
-                height: 1.45,
-                letterSpacing: 0,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '通过链接获取计划',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    '粘贴 GitHub 发布页面或计划文件的下载链接。',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      height: 1.35,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Icon(
+                        LucideIcons.eye,
+                        size: 16,
+                        color: AppColors.accentForeground,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          '下载后先预览，再选择导入内容。',
+                          style: TextStyle(
+                            color: AppColors.accentForeground,
+                            fontSize: 12,
+                            height: 1.3,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 14),
@@ -506,7 +552,7 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
             ),
             const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(8),
@@ -514,7 +560,7 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
               ),
               child: Column(
                 children: [
-                  for (final (icon, title, description) in const [
+                  for (final (index, (icon, title, description)) in const [
                     (LucideIcons.package, 'GitHub 发布页面或仓库', '自动列出最新发布中的计划文件'),
                     (LucideIcons.download, 'GitHub 文件下载链接', '直接读取发布中的计划文件'),
                     (
@@ -522,11 +568,12 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
                       'HTTPS 文件直链',
                       '支持 .sjhplan 计划包和 .zip 压缩包',
                     ),
-                  ])
+                  ].indexed) ...[
+                    if (index > 0) const AppHairline(),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             padding: const EdgeInsets.all(8),
@@ -554,13 +601,13 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
                                     letterSpacing: 0,
                                   ),
                                 ),
-                                const SizedBox(height: 3),
+                                const SizedBox(height: 1),
                                 Text(
                                   description,
                                   style: TextStyle(
                                     color: AppColors.textSecondary,
                                     fontSize: 12,
-                                    height: 1.4,
+                                    height: 1.3,
                                     letterSpacing: 0,
                                   ),
                                 ),
@@ -570,6 +617,7 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
                         ],
                       ),
                     ),
+                  ],
                 ],
               ),
             ),
