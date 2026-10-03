@@ -496,12 +496,87 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
             ..._status(),
             const SizedBox(height: 16),
             Text(
-              '支持：\n'
-              '• GitHub 发布页面或仓库链接（自动列出最新发布中的计划文件）\n'
-              '• GitHub 发布中的文件下载链接\n'
-              '• 其他 https:// 开头的 .sjhplan 或 .zip 直链\n'
-              '.zip 中可以带说明等其他文件，MiriaGo 只读取其中的 .sjhplan。'
-              '下载会连接你输入的地址（以及它跳转到的下载服务器）；'
+              '支持的链接类型',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                children: [
+                  for (final (icon, title, description) in const [
+                    (LucideIcons.package, 'GitHub 发布页面或仓库', '自动列出最新发布中的计划文件'),
+                    (LucideIcons.download, 'GitHub 文件下载链接', '直接读取发布中的计划文件'),
+                    (
+                      LucideIcons.link,
+                      'HTTPS 文件直链',
+                      '支持 .sjhplan 计划包和 .zip 压缩包',
+                    ),
+                  ])
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.accent.withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(
+                              icon,
+                              size: 18,
+                              color: AppColors.accentForeground,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title,
+                                  style: TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  description,
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                    height: 1.4,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '.zip 中可以带说明等其他文件，MiriaGo 只读取其中的 .sjhplan。\n'
+              '下载会连接你输入的地址及其跳转到的下载服务器；'
               'GitHub 发布或仓库链接还会向 api.github.com 查询发布中的文件。',
               style: TextStyle(
                 color: AppColors.textSecondary,
