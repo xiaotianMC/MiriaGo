@@ -262,16 +262,9 @@ class _RoutePlannerSkillLinkState extends State<RoutePlannerSkillLink> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 1),
-              child: Icon(
-                LucideIcons.sparkles,
-                size: 14,
-                color: AppColors.accentDark,
-              ),
-            ),
+            Icon(LucideIcons.sparkles, size: 14, color: AppColors.accentDark),
             const SizedBox(width: 6),
             Expanded(
               child: Text.rich(
