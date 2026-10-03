@@ -887,7 +887,9 @@ class _ActionTile extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: enabled ? AppColors.accentDark : AppColors.textSecondary,
+                color: enabled
+                    ? AppColors.accentStrongForeground
+                    : AppColors.textSecondary,
               ),
               const SizedBox(width: 12),
               Expanded(

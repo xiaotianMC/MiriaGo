@@ -92,7 +92,9 @@ class AppColors {
   }
 
   static Color get onAccent {
-    if (isDark) return foregroundOn(accent);
+    if (isDark && palette == AppThemePalette.aurora) {
+      return foregroundOn(accent);
+    }
     return switch (palette) {
       AppThemePalette.classicGreen => Colors.white,
       AppThemePalette.deepBlue => Colors.white,

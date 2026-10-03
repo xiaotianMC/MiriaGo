@@ -1021,7 +1021,12 @@ class _MapGroupFilterBar extends StatelessWidget {
     return Material(
       key: const ValueKey('map-group-filter-bar'),
       color: MapColors.surface.withValues(alpha: 0.94),
-      borderRadius: BorderRadius.circular(999),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(999),
+        side: AppColors.isDark
+            ? BorderSide(color: MapColors.border)
+            : BorderSide.none,
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(999),
         onTap: onTap,
@@ -1069,7 +1074,12 @@ class _MapFloatingIconButton extends StatelessWidget {
       message: tooltip,
       child: Material(
         color: MapColors.surface.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: AppColors.isDark
+              ? BorderSide(color: MapColors.border)
+              : BorderSide.none,
+        ),
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
           onTap: onTap,
@@ -1150,6 +1160,7 @@ const _mapPointPrimaryActionWidth = 52.0;
 
 ButtonStyle _mapPointIconButtonStyle(double width) {
   return IconButton.styleFrom(
+    side: AppColors.isDark ? BorderSide(color: MapColors.border) : null,
     minimumSize: Size(width, _mapPointActionExtent),
     maximumSize: Size(width, _mapPointActionExtent),
     padding: EdgeInsets.zero,
