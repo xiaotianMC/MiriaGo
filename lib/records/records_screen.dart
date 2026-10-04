@@ -558,7 +558,7 @@ class _RecordScopeFilterSheetState extends State<_RecordScopeFilterSheet> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.overlaySurface,
       builder: (context) => _RecordScopeOptionSheet(
         kind: 'work',
         title: '作品',
@@ -581,7 +581,7 @@ class _RecordScopeFilterSheetState extends State<_RecordScopeFilterSheet> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.overlaySurface,
       builder: (context) => _RecordScopeOptionSheet(
         kind: 'group',
         title: '片区',

@@ -107,7 +107,7 @@ class PointDetailSheet extends StatelessWidget {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.overlaySurface,
       builder: (context) {
         return PointDetailSheet(
           point: point,

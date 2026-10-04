@@ -35,10 +35,11 @@ class AppColors {
 
   static Color get background => isDark ? _darkBackground : _lightBackground;
   static Color get surface => isDark ? _darkSurface : _lightSurface;
+  static Color get overlaySurface => isDark ? _darkBackground : _lightSurface;
   static Color get surfaceMuted =>
       isDark ? _darkSurfaceMuted : _lightSurfaceMuted;
   static Color get secondaryButtonSurface =>
-      isDark ? const Color(0xFF34383D) : surfaceMuted;
+      isDark ? const Color(0xFF1C1C1E) : surfaceMuted;
   static Color get textPrimary => isDark ? _darkTextPrimary : _lightTextPrimary;
   static Color get textSecondary =>
       isDark ? _darkTextSecondary : _lightTextSecondary;
@@ -379,12 +380,26 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.overlaySurface,
         surfaceTintColor: Colors.transparent,
+        shape: AppColors.isDark
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+                side: BorderSide(color: AppColors.border),
+              )
+            : null,
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.overlaySurface,
         surfaceTintColor: Colors.transparent,
+        shape: AppColors.isDark
+            ? RoundedRectangleBorder(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
+                side: BorderSide(color: AppColors.border),
+              )
+            : null,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.surface,

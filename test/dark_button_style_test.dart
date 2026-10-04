@@ -11,6 +11,44 @@ import 'package:miriago/widgets/confirm_action_dialog.dart';
 void main() {
   tearDown(AppTheme.light);
 
+  testWidgets('dark dialogs and bottom sheets use the requested base color', (
+    tester,
+  ) async {
+    final theme = AppTheme.dark();
+    const base = Color(0xFF121417);
+    expect(theme.dialogTheme.backgroundColor, base);
+    expect(theme.bottomSheetTheme.backgroundColor, base);
+    expect(
+      (theme.dialogTheme.shape! as RoundedRectangleBorder).side.color,
+      AppColors.border,
+    );
+    expect(
+      (theme.bottomSheetTheme.shape! as RoundedRectangleBorder).side.color,
+      AppColors.border,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: theme,
+        home: const Scaffold(
+          body: ConfirmActionDialog(
+            title: '确认操作',
+            message: '测试弹窗底色',
+            confirmLabel: '确定',
+          ),
+        ),
+      ),
+    );
+    expect(tester.widget<Dialog>(find.byType(Dialog)).backgroundColor, base);
+    expect(
+      (tester.widget<Dialog>(find.byType(Dialog)).shape!
+              as RoundedRectangleBorder)
+          .side
+          .color,
+      AppColors.border,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   test('dark primary buttons keep the standard theme white labels', () {
     final theme = AppTheme.dark();
     final foreground = theme.filledButtonTheme.style!.foregroundColor!.resolve(
@@ -34,7 +72,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('dark cancel button uses a lighter fill without a border', (
+  testWidgets('dark cancel button uses the requested gray without a border', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -56,10 +94,7 @@ void main() {
     final border = button.style!.side?.resolve({});
     final fill = button.style!.backgroundColor!.resolve({})!;
     expect(border == null || border.style == BorderStyle.none, isTrue);
-    expect(
-      fill.computeLuminance(),
-      greaterThan(AppColors.surface.computeLuminance()),
-    );
+    expect(fill, const Color(0xFF1C1C1E));
     expect(_contrast(AppColors.textPrimary, fill), greaterThanOrEqualTo(4.5));
   });
 

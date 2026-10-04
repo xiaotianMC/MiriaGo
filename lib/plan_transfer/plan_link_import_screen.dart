@@ -346,9 +346,12 @@ class _PlanLinkImportScreenState extends State<PlanLinkImportScreen> {
     return showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      backgroundColor: AppColors.overlaySurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        side: AppColors.isDark
+            ? BorderSide(color: AppColors.border)
+            : BorderSide.none,
       ),
       isScrollControlled: true,
       builder: (context) => SafeArea(
