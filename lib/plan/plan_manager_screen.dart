@@ -280,6 +280,13 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
                       _sorting ? LucideIcons.check : LucideIcons.arrowUpDown,
                     ),
             ),
+          IconButton(
+            tooltip: '导入导出',
+            onPressed: _activePlan == null || _sorting || _savingOrder
+                ? null
+                : () => _openImportExport(_activePlan!),
+            icon: const Icon(LucideIcons.import),
+          ),
         ],
       ),
       body: Builder(
