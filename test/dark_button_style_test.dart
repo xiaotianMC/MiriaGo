@@ -34,7 +34,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('dark cancel button has a visible border on the dialog fill', (
+  testWidgets('dark cancel button uses a lighter fill without a border', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -53,10 +53,14 @@ void main() {
     final button = tester.widget<FilledButton>(
       find.widgetWithText(FilledButton, '取消'),
     );
-    final border = button.style!.side!.resolve({})!;
+    final border = button.style!.side?.resolve({});
     final fill = button.style!.backgroundColor!.resolve({})!;
-    expect(border.width, greaterThan(0));
-    expect(_contrast(border.color, fill), greaterThanOrEqualTo(3));
+    expect(border == null || border.style == BorderStyle.none, isTrue);
+    expect(
+      fill.computeLuminance(),
+      greaterThan(AppColors.surface.computeLuminance()),
+    );
+    expect(_contrast(AppColors.textPrimary, fill), greaterThanOrEqualTo(4.5));
   });
 
   testWidgets('dark map controls have visible borders', (tester) async {

@@ -658,6 +658,12 @@ class _PointDetailActions extends StatelessWidget {
     final actionHeight =
         44 + Theme.of(context).visualDensity.baseSizeAdjustment.dy;
     final actionStyle = OutlinedButton.styleFrom(
+      backgroundColor: AppColors.isDark
+          ? AppColors.secondaryButtonSurface
+          : null,
+      disabledBackgroundColor: AppColors.isDark
+          ? AppColors.secondaryButtonSurface
+          : null,
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
     final primaryActions = <Widget>[

@@ -344,10 +344,7 @@ class AppDialogActionRow extends StatelessWidget {
         onPressed: onCancel,
         style: FilledButton.styleFrom(
           foregroundColor: AppColors.textPrimary,
-          backgroundColor: AppColors.surfaceMuted,
-          side: AppColors.isDark
-              ? BorderSide(color: AppColors.textSecondary)
-              : null,
+          backgroundColor: AppColors.secondaryButtonSurface,
           minimumSize: const Size.fromHeight(48),
           padding: const EdgeInsets.symmetric(horizontal: 10),
           shape: RoundedRectangleBorder(

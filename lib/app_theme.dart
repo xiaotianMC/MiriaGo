@@ -37,6 +37,8 @@ class AppColors {
   static Color get surface => isDark ? _darkSurface : _lightSurface;
   static Color get surfaceMuted =>
       isDark ? _darkSurfaceMuted : _lightSurfaceMuted;
+  static Color get secondaryButtonSurface =>
+      isDark ? const Color(0xFF34383D) : surfaceMuted;
   static Color get textPrimary => isDark ? _darkTextPrimary : _lightTextPrimary;
   static Color get textSecondary =>
       isDark ? _darkTextSecondary : _lightTextSecondary;
