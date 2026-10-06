@@ -374,7 +374,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
     final result = await showModalBottomSheet<_RecordScopeSelection>(
       context: context,
       isScrollControlled: true,
-      showDragHandle: false,
+      showDragHandle: true,
       enableDrag: false,
       useSafeArea: true,
       builder: (context) => _RecordScopeFilterSheet(
@@ -595,20 +595,7 @@ class _RecordScopeFilterSheetState extends State<_RecordScopeFilterSheet> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 12),
-                child: Center(
-                  child: Container(
-                    width: 32,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: AppColors.border,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                 child: Row(
                   children: [
                     const Expanded(
