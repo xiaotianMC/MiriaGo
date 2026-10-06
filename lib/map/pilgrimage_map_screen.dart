@@ -1249,67 +1249,85 @@ class _PointCard extends StatelessWidget {
                 Expanded(
                   child: AppContentFade(
                     revision: (point.id, status),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Flexible(
-                              child: CopyableText(
-                                key: ValueKey(
-                                  'map-point-card-content-${point.id}',
+                    child: SizedBox(
+                      height:
+                          64 *
+                          (MediaQuery.textScalerOf(context).scale(18) / 18)
+                              .clamp(1.0, double.infinity),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: CopyableText(
+                                  key: ValueKey(
+                                    'map-point-card-content-${point.id}',
+                                  ),
+                                  text: point.name,
+                                  copyLabel: '点位名称',
+                                  onTap: onOpenDetail,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    height: 1.15,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0,
+                                  ),
                                 ),
-                                text: point.name,
-                                copyLabel: '点位名称',
+                              ),
+                              const SizedBox(width: 8),
+                              _StatusBadge(status: status),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CopyableText(
+                                key: const ValueKey(
+                                  'map-point-card-work-title',
+                                ),
+                                text: point.work.title,
+                                copyText: _copySummary,
+                                copyLabel: '点位信息',
                                 onTap: onOpenDetail,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 14,
+                                  height: 1.15,
                                   letterSpacing: 0,
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            _StatusBadge(status: status),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        CopyableText(
-                          key: const ValueKey('map-point-card-work-title'),
-                          text: point.work.title,
-                          copyText: _copySummary,
-                          copyLabel: '点位信息',
-                          onTap: onOpenDetail,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 14,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                        if (point.displayEpisodeLabel.trim().isNotEmpty) ...[
-                          const SizedBox(height: 6),
-                          CopyableText(
-                            key: const ValueKey('map-point-card-episode'),
-                            text: point.displayEpisodeLabel.trim().replaceAll(
-                              RegExp(r'\s*/\s*'),
-                              ' · ',
-                            ),
-                            copyLabel: '集数与时间',
-                            onTap: onOpenDetail,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                              letterSpacing: 0,
-                            ),
+                              if (point.displayEpisodeLabel
+                                  .trim()
+                                  .isNotEmpty) ...[
+                                const SizedBox(height: 2),
+                                CopyableText(
+                                  key: const ValueKey('map-point-card-episode'),
+                                  text: point.displayEpisodeLabel
+                                      .trim()
+                                      .replaceAll(RegExp(r'\s*/\s*'), ' · '),
+                                  copyLabel: '集数与时间',
+                                  onTap: onOpenDetail,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 14,
+                                    height: 1.15,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
