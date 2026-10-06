@@ -2869,15 +2869,8 @@ class _CompositionGuidePainter extends CustomPainter {
       path,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.5
-        ..color = Colors.black54,
-    );
-    canvas.drawPath(
-      path,
-      Paint()
-        ..style = PaintingStyle.stroke
         ..strokeWidth = 1
-        ..color = Colors.white70,
+        ..color = Colors.white,
     );
   }
 
