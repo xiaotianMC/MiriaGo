@@ -2810,13 +2810,13 @@ class _ModeIconButton extends StatelessWidget {
               Icon(
                 icon,
                 size: metrics.controlIconSize - 3,
-                color: selected ? AppColors.textPrimary : Colors.white70,
+                color: selected ? const Color(0xFF111827) : Colors.white70,
               ),
               const SizedBox(height: 1),
               Text(
                 label,
                 style: TextStyle(
-                  color: selected ? AppColors.textPrimary : Colors.white70,
+                  color: selected ? const Color(0xFF111827) : Colors.white70,
                   fontSize: 10 * metrics.textScale,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0,
@@ -2866,14 +2866,14 @@ class _ModeChip extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: selected ? AppColors.textPrimary : Colors.white70,
+              color: selected ? const Color(0xFF111827) : Colors.white70,
             ),
             SizedBox(width: compact ? 3 : 5),
             Text(
               label,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: selected ? AppColors.textPrimary : Colors.white70,
+                color: selected ? const Color(0xFF111827) : Colors.white70,
                 fontSize: 12,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0,
