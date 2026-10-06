@@ -1254,9 +1254,7 @@ class _PointCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            _StatusBadge(status: status),
-                            const SizedBox(width: 8),
-                            Expanded(
+                            Flexible(
                               child: CopyableText(
                                 key: ValueKey(
                                   'map-point-card-content-${point.id}',
@@ -1267,17 +1265,20 @@ class _PointCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 0,
                                 ),
                               ),
                             ),
+                            const SizedBox(width: 8),
+                            _StatusBadge(status: status),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         CopyableText(
-                          text: _metaText,
+                          key: const ValueKey('map-point-card-work-title'),
+                          text: point.work.title,
                           copyText: _copySummary,
                           copyLabel: '点位信息',
                           onTap: onOpenDetail,
@@ -1285,10 +1286,29 @@ class _PointCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: AppColors.textSecondary,
-                            fontSize: 13,
+                            fontSize: 14,
                             letterSpacing: 0,
                           ),
                         ),
+                        if (point.displayEpisodeLabel.trim().isNotEmpty) ...[
+                          const SizedBox(height: 6),
+                          CopyableText(
+                            key: const ValueKey('map-point-card-episode'),
+                            text: point.displayEpisodeLabel.trim().replaceAll(
+                              RegExp(r'\s*/\s*'),
+                              ' · ',
+                            ),
+                            copyLabel: '集数与时间',
+                            onTap: onOpenDetail,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 14,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -1400,14 +1420,6 @@ class _PointCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String get _metaText {
-    final episodeLabel = point.episodeLabel.trim();
-    if (episodeLabel.isEmpty) {
-      return point.work.title;
-    }
-    return '${point.work.title} / $episodeLabel';
   }
 
   String get _copySummary {
