@@ -640,8 +640,8 @@ class _CamerawesomeReferenceScreenState
     return _CameraGuidesScope(
       grid: _gridEnabled,
       diagonals: _diagonalsEnabled,
-      onGrid: _savingGuides ? null : () => _toggleGuide(grid: true),
-      onDiagonals: _savingGuides ? null : () => _toggleGuide(grid: false),
+      onGrid: () => _toggleGuide(grid: true),
+      onDiagonals: () => _toggleGuide(grid: false),
       child: Scaffold(
         backgroundColor: AppColors.background,
         body: kIsWeb
@@ -2780,12 +2780,15 @@ class _CameraGuidesScope extends InheritedWidget {
 }
 
 class _GuideButtons extends StatelessWidget {
-  const _GuideButtons({this.vertical = false});
-  final bool vertical;
+  const _GuideButtons({this.metrics});
+  final _CameraLayoutMetrics? metrics;
 
   @override
   Widget build(BuildContext context) {
     final guides = _CameraGuidesScope.of(context);
+    final vertical = metrics != null;
+    final size = metrics?.modeButtonWidth ?? 36;
+    final gap = metrics?.modeGap ?? 6;
     return Flex(
       direction: vertical ? Axis.vertical : Axis.horizontal,
       mainAxisSize: MainAxisSize.min,
@@ -2798,27 +2801,35 @@ class _GuideButtons extends StatelessWidget {
             guides.diagonals,
             guides.onDiagonals,
           ),
-        ])
+        ]) ...[
+          if (entry.$1 == '对角线')
+            SizedBox(width: vertical ? 0 : gap, height: vertical ? gap : 0),
           Semantics(
             toggled: entry.$3,
-            child: IconButton(
-              key: ValueKey('camera-guide-${entry.$1}'),
-              tooltip: entry.$1,
-              onPressed: entry.$4,
-              icon: Icon(entry.$2, size: 19),
-              style: IconButton.styleFrom(
-                minimumSize: const Size(36, 36),
-                padding: const EdgeInsets.all(8),
-                foregroundColor: entry.$3
-                    ? const Color(0xFF111827)
-                    : Colors.white70,
-                backgroundColor: entry.$3 ? Colors.white : Colors.white12,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            child: SizedBox.square(
+              dimension: size,
+              child: IconButton(
+                key: ValueKey('camera-guide-${entry.$1}'),
+                tooltip: entry.$1,
+                onPressed: entry.$4,
+                icon: Icon(entry.$2, size: metrics?.controlIconSize ?? 19),
+                style: IconButton.styleFrom(
+                  fixedSize: Size.square(size),
+                  minimumSize: Size.square(size),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: const EdgeInsets.all(8),
+                  foregroundColor: entry.$3
+                      ? const Color(0xFF111827)
+                      : Colors.white70,
+                  backgroundColor: entry.$3 ? Colors.white : Colors.white12,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
           ),
+        ],
       ],
     );
   }
@@ -2870,7 +2881,7 @@ class _CompositionGuidePainter extends CustomPainter {
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1
-        ..color = Colors.white,
+        ..color = const Color(0xFFD1D5DB),
     );
   }
 
@@ -2962,7 +2973,7 @@ class _ModeColumnSelector extends StatelessWidget {
           ),
           SizedBox(height: metrics.modeGap),
         ],
-        const _GuideButtons(vertical: true),
+        _GuideButtons(metrics: metrics),
       ],
     );
   }
