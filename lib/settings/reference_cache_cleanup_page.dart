@@ -92,7 +92,7 @@ class _ReferenceCacheCleanupPageState extends State<ReferenceCacheCleanupPage> {
         backgroundColor: AppColors.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        toolbarHeight: 64,
+        toolbarHeight: 56,
         titleSpacing: 0,
         leading: const AppBackButton(),
         title: Text('清理参考图缓存', style: _text(20, bold: true)),
@@ -124,7 +124,7 @@ class _ReferenceCacheCleanupPageState extends State<ReferenceCacheCleanupPage> {
           final allSelected =
               plans.isNotEmpty && _selectedPlanIds.length == plans.length;
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
             children: [
               Material(
                 color: AppColors.surface,
@@ -140,14 +140,13 @@ class _ReferenceCacheCleanupPageState extends State<ReferenceCacheCleanupPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 16, 12, 14),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('选择计划', style: _text(18, bold: true)),
-                                const SizedBox(height: 4),
                                 Text(
                                   '已选 ${_selectedPlanIds.length} 个，共 ${plans.length} 个',
                                   style: _text(14, secondary: true),
@@ -244,7 +243,7 @@ class _ReferenceCacheCleanupPageState extends State<ReferenceCacheCleanupPage> {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 4),
                     Text(
                       '仅清理完整参考图，保留缩略图。\n再次查看完整图片需重新下载。',
                       style: _text(14, secondary: true).copyWith(height: 1.5),
@@ -335,7 +334,6 @@ class _ReferenceCacheCleanupPageState extends State<ReferenceCacheCleanupPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(plan.name, style: _text(16, bold: true)),
-                          const SizedBox(height: 4),
                           Text(
                             '${plan.area} · ${plan.points.length} 个点位',
                             style: _text(14, secondary: true),
